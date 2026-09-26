@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raj Jaiswal | Portfolio</title>
+    <title>Raj Jaiswal | Interactive OS Portfolio</title>
     <style>
         :root {
-            --bg-dark: #0f172a;
-            --window-bg: rgba(30, 41, 59, 0.75);
-            --window-border: rgba(255, 255, 255, 0.1);
+            --bg-dark: #090d16;
+            --window-bg: rgba(15, 23, 42, 0.65);
+            --window-border: rgba(255, 255, 255, 0.08);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #38bdf8;
-            --accent-glow: rgba(56, 189, 248, 0.3);
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --window-shadow: rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -26,28 +27,57 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
         }
 
-        /* Animated Background Canvas */
-        #bg-canvas {
+        /* --- Animated Glowing Wave Background --- */
+        .bg-wrapper {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #090d16 100%);
         }
 
-        /* Desktop Environment */
+        .glow-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: -200px;
+            animation: floatOrb 25s infinite alternate linear;
+            border-radius: 50%;
+        }
+
+        .glow-orb-2 {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(0,0,0,0) 70%);
+            bottom: -150px;
+            right: -150px;
+            animation: floatOrb 18s infinite alternate-reverse linear;
+            border-radius: 50%;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 80px) scale(1.2); }
+        }
+
+        /* --- Desktop Environment --- */
         .desktop {
             position: relative;
             width: 100%;
             height: 100%;
             z-index: 2;
-            padding: 20px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             gap: 25px;
@@ -55,71 +85,91 @@
             flex-wrap: wrap;
         }
 
-        /* Desktop Shortcuts */
+        /* --- Desktop Shortcuts & Click Mechanics --- */
         .icon {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 90px;
-            height: 90px;
-            border-radius: 8px;
+            width: 95px;
+            height: 95px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            border: 1px solid transparent;
         }
 
         .icon:hover {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .icon:active {
-            transform: scale(0.95);
+            transform: scale(0.92) translateY(0);
         }
 
         .icon-symbol {
             font-size: 2.5rem;
-            margin-bottom: 5px;
-            filter: drop-shadow(0 2px 8px var(--accent-glow));
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 10px var(--accent-glow));
+            transition: transform 0.3s ease;
+        }
+
+        .icon:hover .icon-symbol {
+            transform: scale(1.1);
         }
 
         .icon-label {
             font-size: 0.85rem;
             font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
         }
 
-        /* OS Windows */
+        /* --- Multi Window Blueprint --- */
         .window {
             position: absolute;
-            min-width: 320px;
-            min-height: 200px;
+            width: 420px;
+            min-height: 250px;
             background: var(--window-bg);
             border: 1px solid var(--window-border);
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            box-shadow: 0 30px 60px var(--window-shadow);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             z-index: 10;
+            
+            /* Animation States */
             display: none;
             flex-direction: column;
             overflow: hidden;
-            transform: scale(0.95);
             opacity: 0;
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            transform: scale(0.85) translateY(30px);
+            transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                        transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .window.active-win {
+        /* Windows Open State Animation */
+        .window.win-open {
             display: flex;
-            transform: scale(1);
             opacity: 1;
+            transform: scale(1) translateY(0);
         }
 
-        /* Window Titlebar */
+        /* Windows Closing State Animation */
+        .window.win-closing {
+            opacity: 0;
+            transform: scale(0.85) translateY(30px);
+        }
+
+        /* --- Window Titlebar --- */
         .titlebar {
-            background: rgba(15, 23, 42, 0.6);
-            padding: 12px 16px;
+            background: rgba(9, 13, 22, 0.5);
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -133,7 +183,7 @@
             letter-spacing: 0.5px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .window-controls {
@@ -142,20 +192,26 @@
         }
 
         .control-btn {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             cursor: pointer;
             border: none;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15);
         }
 
         .btn-close { background-color: #ef4444; }
-        .btn-close:hover { background-color: #dc2626; }
-        .btn-dummy { background-color: #eab308; opacity: 0.6; cursor: not-allowed; }
+        .btn-close:hover { background-color: #f87171; }
+        .btn-min { background-color: #f59e0b; }
+        .btn-min:hover { background-color: #fbbf24; }
 
-        /* Window Content */
+        /* --- Window Content & Typography --- */
         .window-content {
-            padding: 20px;
+            padding: 24px;
             flex-grow: 1;
             overflow-y: auto;
             color: var(--text-main);
@@ -164,18 +220,24 @@
             user-select: text;
         }
 
-        /* Custom Specific Layouts Inside Windows */
         .profile-header h1 {
             color: var(--accent);
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
         }
         .profile-header p {
             color: var(--text-muted);
-            font-weight: 500;
-            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
+        /* --- Skills Architecture Animation --- */
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -184,41 +246,56 @@
         }
 
         .skill-card {
-            background: rgba(255,255,255,0.05);
-            padding: 10px;
-            border-radius: 6px;
-            border-left: 3px solid var(--accent);
+            background: rgba(255,255,255,0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-left: 4px solid var(--accent);
             font-weight: 600;
+            transition: all 0.3s ease;
         }
 
+        .skill-card:hover {
+            background: rgba(56, 189, 248, 0.08);
+            transform: translateX(4px);
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* --- Contact Framework --- */
         .contact-list {
             list-style: none;
         }
 
         .contact-list li {
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
         .contact-list a {
             color: var(--accent);
             text-decoration: none;
+            transition: color 0.2s, opacity 0.2s;
         }
         .contact-list a:hover {
+            color: #7dd3fc;
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <!-- Animated Particles -->
-    <canvas id="bg-canvas"></canvas>
+    <!-- Animated Glowing Core -->
+    <div class="bg-wrapper">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
 
-    <!-- Desktop Area -->
+    <!-- Desktop Grid Workspace -->
     <div class="desktop">
         
+        <!-- Multi-Window Triggering Shortcut Buttons -->
         <div class="icon" onclick="openWindow('win-about')">
             <span class="icon-symbol">👤</span>
             <span class="icon-label">About Me</span>
@@ -226,7 +303,7 @@
 
         <div class="icon" onclick="openWindow('win-skills')">
             <span class="icon-symbol">🛠️</span>
-            <span class="icon-label">Skills</span>
+            <span class="icon-label">Tech Stack</span>
         </div>
 
         <div class="icon" onclick="openWindow('win-contact')">
@@ -236,12 +313,12 @@
 
     </div>
 
-    <!-- Window: About Me -->
-    <div id="win-about" class="window" style="top: 15%; left: 30%;">
+    <!-- WINDOW 1: Profile Profile -->
+    <div id="win-about" class="window" style="top: 15%; left: 25%;">
         <div class="titlebar">
             <div class="window-title">👤 About Raj</div>
             <div class="window-controls">
-                <button class="control-btn btn-dummy"></button>
+                <button class="control-btn btn-min" onclick="closeWindow('win-about')"></button>
                 <button class="control-btn btn-close" onclick="closeWindow('win-about')"></button>
             </div>
         </div>
@@ -250,75 +327,7 @@
                 <h1>RAJ JAISWAL</h1>
                 <p>Full Stack Developer</p>
             </div>
-            <p>Hello! I am a passionate Full Stack Developer focused on building clean, efficient, and dynamic web architectures. Welcome to my interactive multi-window OS workspace!</p>
+            <p>I build enterprise-grade frontend systems and resilient backend pipelines. Welcome to my custom window environment built completely natively with pure system mechanics.</p>
         </div>
     </div>
 
-    <!-- Window: Skills -->
-    <div id="win-skills" class="window" style="top: 25%; left: 35%;">
-        <div class="titlebar">
-            <div class="window-title">🛠️ Tech Stack</div>
-            <div class="window-controls">
-                <button class="control-btn btn-dummy"></button>
-                <button class="control-btn btn-close" onclick="closeWindow('win-skills')"></button>
-            </div>
-        </div>
-        <div class="window-content">
-            <p>My core engineering and developer tools:</p>
-            <div class="skills-grid">
-                <div class="skill-card">HTML</div>
-                <div class="skill-card">CSS</div>
-                <div class="skill-card">Java</div>
-                <div class="skill-card">Database</div>
-                <div class="skill-card">Full Stack Dev</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Window: Contact -->
-    <div id="win-contact" class="window" style="top: 35%; left: 40%;">
-        <div class="titlebar">
-            <div class="window-title">📞 Connect</div>
-            <div class="window-controls">
-                <button class="control-btn btn-dummy"></button>
-                <button class="control-btn btn-close" onclick="closeWindow('win-contact')"></button>
-            </div>
-        </div>
-        <div class="window-content">
-            <ul class="contact-list">
-                <li><strong>Email:</strong> <a href="mailto:raj.jaiswal@example.com">raj.jaiswal@example.com</a></li>
-                <li><strong>GitHub:</strong> <a href="#" target="_blank">://github.com</a></li>
-                <li><strong>LinkedIn:</strong> <a href="#" target="_blank">://linkedin.com</a></li>
-                <li><strong>Location:</strong> India</li>
-            </ul>
-        </div>
-    </div>
-
-    <script>
-        /* --- 1. ANIMATED BACKGROUND (Canvas Particles) --- */
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = Math.random() * 0.6 - 0.3;
-                this.speedY = Math.random() * 0.6 - 0.3;
-                this.alpha = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
