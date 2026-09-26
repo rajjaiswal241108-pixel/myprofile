@@ -1,1 +1,161 @@
-<html> HELLO WORLD </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Jaiswal - Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            color: #222;
+        }
+
+        .profile {
+            max-width: 850px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+
+        .header {
+            background: #1f4e79;
+            color: white;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+        }
+
+        .header p {
+            margin: 5px;
+            font-size: 17px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #1f4e79;
+            border-bottom: 2px solid #1f4e79;
+            padding-bottom: 7px;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .box {
+            background: #f7f9fc;
+            padding: 14px;
+            border-radius: 8px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill {
+            background: #1f4e79;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 20px;
+        }
+
+        footer {
+            text-align: center;
+            background: #eef2f6;
+            padding: 15px;
+            color: #555;
+        }
+
+        @media (max-width: 600px) {
+            .info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile">
+        <div class="header">
+            <h1>Raj Jaiswal</h1>
+            <p>SE IT-B | Roll No. 01</p>
+            <p>Student | Aspiring IT Professional</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>About Me</h2>
+                <p>
+                    Hello! I am Raj Jaiswal, a student pursuing Information Technology.
+                    I am interested in programming, web development, databases and
+                    learning new technologies. I enjoy building simple practical
+                    projects and improving my technical skills.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>Education</h2>
+                <div class="box">
+                    <strong>Thakur College of Engineering & Technology</strong><br>
+                    Bachelor of Engineering / Information Technology<br>
+                    Class: SE IT-B | Roll No.: 01
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Technical Skills</h2>
+                <div class="skills">
+                    <span class="skill">HTML</span>
+                    <span class="skill">CSS</span>
+                    <span class="skill">Java</span>
+                    <span class="skill">C</span>
+                    <span class="skill">Python</span>
+                    <span class="skill">SQL</span>
+                    <span class="skill">DBMS</span>
+                    <span class="skill">DSA</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Interests</h2>
+                <div class="info">
+                    <div class="box">Web Development</div>
+                    <div class="box">Programming</div>
+                    <div class="box">Database Management</div>
+                    <div class="box">AI & Technology</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Career Goal</h2>
+                <p>
+                    To develop strong technical and problem-solving skills and build
+                    a successful career in the IT industry.
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            © 2026 Raj Jaiswal | Personal Profile
+        </footer>
+    </div>
+</body>
+</html>
