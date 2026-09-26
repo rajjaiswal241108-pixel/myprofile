@@ -3,159 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raj Jaiswal - Profile</title>
+    <title>Raj Jaiswal | Portfolio</title>
     <style>
-        body {
+        :root {
+            --bg-dark: #0f172a;
+            --window-bg: rgba(30, 41, 59, 0.75);
+            --window-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f2f5f9;
-            color: #222;
+            padding: 0;
+            user-select: none;
         }
 
-        .profile {
-            max-width: 850px;
-            margin: 40px auto;
-            background: white;
-            border-radius: 15px;
+        body, html {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
         }
 
-        .header {
-            background: #1f4e79;
-            color: white;
-            text-align: center;
-            padding: 35px 20px;
+        /* Animated Background Canvas */
+        #bg-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
-        .header h1 {
-            margin: 0 0 8px;
-            font-size: 34px;
-        }
-
-        .header p {
-            margin: 5px;
-            font-size: 17px;
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .section {
-            margin-bottom: 25px;
-        }
-
-        .section h2 {
-            color: #1f4e79;
-            border-bottom: 2px solid #1f4e79;
-            padding-bottom: 7px;
-        }
-
-        .info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .box {
-            background: #f7f9fc;
-            padding: 14px;
-            border-radius: 8px;
-        }
-
-        .skills {
+        /* Desktop Environment */
+        .desktop {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            padding: 20px;
             display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-content: flex-start;
             flex-wrap: wrap;
+        }
+
+        /* Desktop Shortcuts */
+        .icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            text-align: center;
+        }
+
+        .icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+
+        .icon:active {
+            transform: scale(0.95);
+        }
+
+        .icon-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+            filter: drop-shadow(0 2px 8px var(--accent-glow));
+        }
+
+        .icon-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* OS Windows */
+        .window {
+            position: absolute;
+            min-width: 320px;
+            min-height: 200px;
+            background: var(--window-bg);
+            border: 1px solid var(--window-border);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+        }
+
+        .window.active-win {
+            display: flex;
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Window Titlebar */
+        .titlebar {
+            background: rgba(15, 23, 42, 0.6);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-bottom: 1px solid var(--window-border);
+        }
+
+        .window-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-close { background-color: #ef4444; }
+        .btn-close:hover { background-color: #dc2626; }
+        .btn-dummy { background-color: #eab308; opacity: 0.6; cursor: not-allowed; }
+
+        /* Window Content */
+        .window-content {
+            padding: 20px;
+            flex-grow: 1;
+            overflow-y: auto;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            user-select: text;
+        }
+
+        /* Custom Specific Layouts Inside Windows */
+        .profile-header h1 {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .profile-header p {
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .skill-card {
+            background: rgba(255,255,255,0.05);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--accent);
+            font-weight: 600;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .skill {
-            background: #1f4e79;
-            color: white;
-            padding: 9px 15px;
-            border-radius: 20px;
+        .contact-list a {
+            color: var(--accent);
+            text-decoration: none;
         }
-
-        footer {
-            text-align: center;
-            background: #eef2f6;
-            padding: 15px;
-            color: #555;
-        }
-
-        @media (max-width: 600px) {
-            .info {
-                grid-template-columns: 1fr;
-            }
+        .contact-list a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
-    <div class="profile">
-        <div class="header">
-            <h1>Raj Jaiswal</h1>
-            <p>SE IT-B | Roll No. 01</p>
-            <p>Student | Aspiring IT Professional</p>
+
+    <!-- Animated Particles -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Desktop Area -->
+    <div class="desktop">
+        
+        <div class="icon" onclick="openWindow('win-about')">
+            <span class="icon-symbol">👤</span>
+            <span class="icon-label">About Me</span>
         </div>
 
-        <div class="content">
-            <div class="section">
-                <h2>About Me</h2>
-                <p>
-                    Hello! I am Raj Jaiswal, a student pursuing Information Technology.
-                    I am interested in programming, web development, databases and
-                    learning new technologies. I enjoy building simple practical
-                    projects and improving my technical skills.
-                </p>
-            </div>
-
-            <div class="section">
-                <h2>Education</h2>
-                <div class="box">
-                    <strong>Thakur College of Engineering & Technology</strong><br>
-                    Bachelor of Engineering / Information Technology<br>
-                    Class: SE IT-B | Roll No.: 01
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Technical Skills</h2>
-                <div class="skills">
-                    <span class="skill">HTML</span>
-                    <span class="skill">CSS</span>
-                    <span class="skill">Java</span>
-                    <span class="skill">C</span>
-                    <span class="skill">Python</span>
-                    <span class="skill">SQL</span>
-                    <span class="skill">DBMS</span>
-                    <span class="skill">DSA</span>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Interests</h2>
-                <div class="info">
-                    <div class="box">Web Development</div>
-                    <div class="box">Programming</div>
-                    <div class="box">Database Management</div>
-                    <div class="box">AI & Technology</div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>Career Goal</h2>
-                <p>
-                    To develop strong technical and problem-solving skills and build
-                    a successful career in the IT industry.
-                </p>
-            </div>
+        <div class="icon" onclick="openWindow('win-skills')">
+            <span class="icon-symbol">🛠️</span>
+            <span class="icon-label">Skills</span>
         </div>
 
-        <footer>
-            © 2026 Raj Jaiswal | Personal Profile
-        </footer>
+        <div class="icon" onclick="openWindow('win-contact')">
+            <span class="icon-symbol">📞</span>
+            <span class="icon-label">Contact</span>
+        </div>
+
     </div>
-</body>
-</html>
+
+    <!-- Window: About Me -->
+    <div id="win-about" class="window" style="top: 15%; left: 30%;">
+        <div class="titlebar">
+            <div class="window-title">👤 About Raj</div>
+            <div class="window-controls">
+                <button class="control-btn btn-dummy"></button>
+                <button class="control-btn btn-close" onclick="closeWindow('win-about')"></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="profile-header">
+                <h1>RAJ JAISWAL</h1>
+                <p>Full Stack Developer</p>
+            </div>
+            <p>Hello! I am a passionate Full Stack Developer focused on building clean, efficient, and dynamic web architectures. Welcome to my interactive multi-window OS workspace!</p>
+        </div>
+    </div>
+
+    <!-- Window: Skills -->
+    <div id="win-skills" class="window" style="top: 25%; left: 35%;">
+        <div class="titlebar">
+            <div class="window-title">🛠️ Tech Stack</div>
+            <div class="window-controls">
+                <button class="control-btn btn-dummy"></button>
+                <button class="control-btn btn-close" onclick="closeWindow('win-skills')"></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <p>My core engineering and developer tools:</p>
+            <div class="skills-grid">
+                <div class="skill-card">HTML</div>
+                <div class="skill-card">CSS</div>
+                <div class="skill-card">Java</div>
+                <div class="skill-card">Database</div>
+                <div class="skill-card">Full Stack Dev</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Window: Contact -->
+    <div id="win-contact" class="window" style="top: 35%; left: 40%;">
+        <div class="titlebar">
+            <div class="window-title">📞 Connect</div>
+            <div class="window-controls">
+                <button class="control-btn btn-dummy"></button>
+                <button class="control-btn btn-close" onclick="closeWindow('win-contact')"></button>
+            </div>
+        </div>
+        <div class="window-content">
+            <ul class="contact-list">
+                <li><strong>Email:</strong> <a href="mailto:raj.jaiswal@example.com">raj.jaiswal@example.com</a></li>
+                <li><strong>GitHub:</strong> <a href="#" target="_blank">://github.com</a></li>
+                <li><strong>LinkedIn:</strong> <a href="#" target="_blank">://linkedin.com</a></li>
+                <li><strong>Location:</strong> India</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        /* --- 1. ANIMATED BACKGROUND (Canvas Particles) --- */
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.speedY = Math.random() * 0.6 - 0.3;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
